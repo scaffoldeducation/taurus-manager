@@ -5,7 +5,6 @@
   "author": "Developer <dev@kiwfy.com>",
   "license": "MIT",
   "dependencies": {
-    "bee-queue": "^1.0.0",
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "dotenv": "^8.2.0",
@@ -17,7 +16,8 @@
     "jsoneditor": "^5.9.6",
     "lodash": "^4.17.19",
     "nodemon": "^2.0.4",
-    "tablesort": "^5.0.1"
+    "tablesort": "^5.0.1",
+    "ulid": "^2.3.0"
   },
   "scripts": {
     "start": "nodemon index.js --ignore 'public/vendor/*'",
