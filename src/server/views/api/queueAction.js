@@ -13,15 +13,13 @@ function queueAction(action) {
   }
 
   async function retry(req, res) {
-    const { queues: queueList } = req.body;
+    const { queueName, queueHost } = req.body;
     const { Queues } = req.app.locals;
 
     try {
-      for (let { name, host } of queueList) {
-        const queue = await Queues.get(name, host);
-        const jobs = await queue.getJobs('failed');
-        var actionPromises = jobs.map(job => job['retry']());
-      }
+      const queue = await Queues.get(queueName, queueHost);
+      const jobs = await queue.getJobs('failed');
+      const actionPromises = jobs.map(job => job['retry']());
 
       await Promise.all(actionPromises);
 
