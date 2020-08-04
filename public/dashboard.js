@@ -212,6 +212,11 @@ $(document).ready(() => {
 
   $('.js-toggle-add-job-editor').on('click', function() {
     $('.json-editor').toggleClass('hide');
+    const data = $('.json-text').val();
+    if (data.length === 0) {
+      $('.js-add-job').prop('disabled', true);
+      $('.js-format-json').prop('disabled', true);
+    }
   });
 
   $('.json-text').keyup(function() {
