@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const util = require('util');
+const { hideProtectedFields } = require('../helpers/jobHelpers');
 
 async function handler(req, res) {
   if (!req.session.loggedin) {
@@ -14,7 +14,7 @@ async function handler(req, res) {
   const queue = await Queues.get(queueName, queueHost);
   if (!queue) return res.status(404).render('dashboard/templates/queueNotFound', { basePath, queueName, queueHost });
 
-  const job = await queue.getJob(id);
+  let job = await queue.getJob(id);
   if (!job) return res.status(404).render('dashboard/templates/jobNotFound', { basePath, id, queueName, queueHost });
 
   if (json === 'true') {
@@ -28,6 +28,8 @@ async function handler(req, res) {
 
   let logs = await queue.getJobLogs(job.id);
   job.logs = (logs.logs || "No Logs");
+
+  job = hideProtectedFields(job);
 
   return res.render('dashboard/templates/jobDetails', {
     basePath,
