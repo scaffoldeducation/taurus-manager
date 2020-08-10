@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { BULL_STATES } = require('../helpers/queueHelpers');
+const { hideProtectedFields } = require('../helpers/jobHelpers');
 
 /**
  * Determines if the requested job state lookup is valid.
@@ -87,6 +88,8 @@ async function _html(req, res) {
     pages.push(_.last(pages) + 1);
   }
   pages = pages.filter((page) => page <= _.ceil(jobCounts[state] / pageSize));
+
+  jobs.map(hideProtectedFields);
 
   return res.render('dashboard/templates/queueJobsByState', {
     basePath,

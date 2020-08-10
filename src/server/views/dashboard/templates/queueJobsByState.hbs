@@ -49,6 +49,9 @@
       <button type="button" data-action="retry" data-queue-name="{{ queueName }}" data-queue-host="{{ queueHost }}" data-queue-state="{{ state }}" class="js-bulk-action btn btn-success">
         Retry Jobs
       </button>
+      <button type="button" class="js-queue-retry btn btn-info" data-queue-name={{ queueName }} data-queue-host={{ queueHost }}>
+        Retry All
+      </button>
     {{/eq}}
 
       <div class="btn-group">
