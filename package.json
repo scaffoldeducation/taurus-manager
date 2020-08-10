@@ -3,7 +3,7 @@
   "description": "Manage Taurus Queue",
   "main": "index.js",
   "author": "Developer <dev@kiwfy.com>",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",

@@ -8,16 +8,6 @@ $(document).ready(() => {
   function isValidQueueAction(data) {
     const { action, queues } = data;
 
-    if (action === 'retry' && queues.length > 1) {
-      window.alert('Please, select only 1 queue.');
-      return false;
-    }
-
-    if (action === 'retry' && queues.length === 0) {
-      window.alert('Please, select 1 queue.');
-      return false;
-    }
-
     if (action === 'resume' && queues.length === 0) {
       window.alert('Please, select 1 queue.');
       return false;
@@ -119,13 +109,44 @@ $(document).ready(() => {
     });
   })();
 
+  $('.js-queue-retry').on('click', function(e) {
+    const confirmation = window.confirm(
+      `Warning! You are about to retry all the failed jobs. Do you confirm this action?`
+    );
+
+    const queueHost = $(this).data('queue-host');
+    const queueName = $(this).data('queue-name');
+
+    let data = {
+      queueHost,
+      queueName,
+    };
+
+    if (confirmation) {
+      $.ajax({
+        method: 'POST',
+        url: `${basePath}/api/queue/retry`,
+        data: JSON.stringify(data),
+        contentType: 'application/json'
+      }).done(() => {
+        window.location.reload();
+      }).fail((jqXHR) => {
+        window.alert(`Request failed, check console for error.`);
+        console.error(jqXHR.responseText);
+      });
+    } else {
+      $(this).prop('disabled', false);
+    }
+  });
+
   $('.js-queue-action').on('click', function(e) {
     $(this).prop('disabled', true);
-
+    
+    const action = $(e.target).data('action');
     const $queueActionContainer = $('.js-queue-action-container');
 
     let data = {
-      action: $(e.target).data('action'),
+      action,
       queues: [],
     };
 
@@ -212,6 +233,11 @@ $(document).ready(() => {
 
   $('.js-toggle-add-job-editor').on('click', function() {
     $('.json-editor').toggleClass('hide');
+    const data = $('.json-text').val();
+    if (data.length === 0) {
+      $('.js-add-job').prop('disabled', true);
+      $('.js-format-json').prop('disabled', true);
+    }
   });
 
   $('.json-text').keyup(function() {
