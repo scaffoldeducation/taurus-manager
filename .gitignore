@@ -3,3 +3,4 @@ node_modules
 *.DS_Store
 .vscode
 *.tern-port
+docker-compose.override.yml
